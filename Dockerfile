@@ -1,4 +1,3 @@
-FROM python:3.4.5-slim
 
 # Upgrade pip
 FROM gcr.io/google_appengine/python

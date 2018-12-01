@@ -1,7 +1,7 @@
 FROM python:3.4.5-slim
 
 # Upgrade pip
-RUN pip install --upgrade pip
+FROM gcr.io/google_appengine/python
 
 # Install tesseract-ocr
 RUN apt-get update &&  apt-get install -y \
@@ -9,16 +9,19 @@ RUN apt-get update &&  apt-get install -y \
     libtesseract-dev
 
 ## make a local directory
-RUN mkdir /app
+RUN virtualenv /env
 
-# set "app" as the working directory from which CMD, RUN, ADD references
-WORKDIR /app
+ # Setting these environment variables are the same as running
+ # source /env/bin/activate.
+ENV VIRTUAL_ENV /env
+ENV PATH /env/bin:$PATH
 
-# now copy all the files in this directory to /code
-ADD . .
+ # Copy the application's requirements.txt and run pip to install all
+ # dependencies into the virtualenv.
+ADD requirements.txt /app/requirements.txt
+RUN pip install -r /app/requirements.txt
 
-# pip install the local requirements.txt
-RUN pip install -r requirements.txt
+# # Add the application source code.
+ADD . /app
 
-# Define our command to be run when launching the container
-CMD gunicorn app:app --bind 0.0.0.0:$PORT --reload
+CMD honcho start -f /app/procfile worker monitor

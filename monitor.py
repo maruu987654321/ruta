@@ -1,7 +1,6 @@
 from flask import Flask, jsonify
 import pytesseract
 import os
-port = int(os.environ.get('PORT', 5000))
 
 try:
     import Image

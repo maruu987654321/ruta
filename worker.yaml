@@ -1,3 +1,0 @@
-service: monitor
-runtime: custom
-env: flex

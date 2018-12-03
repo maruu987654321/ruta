@@ -10,3 +10,5 @@
 - Run the container with `docker run -d -p 5000:5000 -e PORT=5000 --name project-server project_dep`
 - Check that the container is running
 - Go to `localhost:5000`. Ready!!!! )
+
+gcloud app deploy app.yaml    - deploy on google cloud
